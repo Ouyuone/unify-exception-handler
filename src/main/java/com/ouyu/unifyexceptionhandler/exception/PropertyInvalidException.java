@@ -4,7 +4,7 @@ package com.ouyu.unifyexceptionhandler.exception;
  * <pre>
  * @Auther: ousakai
  * @Date: 2021-01-13 16:47
- * @Description:
+ * @Description: 配置文件验证异常
  * 修改版本: 1.0
  * 修改日期:
  * 修改人 :

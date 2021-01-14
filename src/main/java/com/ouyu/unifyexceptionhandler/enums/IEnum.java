@@ -4,7 +4,7 @@ package com.ouyu.unifyexceptionhandler.enums;
  * <pre>
  * @Auther: ousakai
  * @Date: 2021-01-14 13:36
- * @Description:
+ * @Description: 枚举基类
  * 修改版本: 1.0
  * 修改日期:
  * 修改人 :

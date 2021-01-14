@@ -10,8 +10,11 @@ import com.ouyu.unifyexceptionhandler.exception.PropertyInvalidException;
 import com.ouyu.unifyexceptionhandler.strategy.ExceptionStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
@@ -22,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -29,7 +33,7 @@ import java.util.Objects;
  * <pre>
  * @Auther: ousakai
  * @Date: 2021-01-13 15:42
- * @Description:
+ * @Description: 统一异常处理
  * 修改版本: 1.0
  * 修改日期:
  * 修改人 :
@@ -50,6 +54,8 @@ public class ExceptionHandler implements HandlerExceptionResolver {
     public ExceptionHandler(HandlerType handlerType) {
         this.handlerType = handlerType;
     }
+    @Autowired
+    private Environment env;
 
     @Override
     public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object o, Exception e) {
@@ -67,7 +73,8 @@ public class ExceptionHandler implements HandlerExceptionResolver {
                 throw  new PropertyInvalidException("检查确保配置文件中unify.exception-handler.view路径正确");
             }*/
             String realPath = null;
-            for (String resourceLocation : CLASSPATH_RESOURCE_LOCATIONS) {
+            String[] classpath_resource_locations_clone = copyResourceLocations();
+            for (String resourceLocation : classpath_resource_locations_clone) {
                 if (!viewPath.contains(resourceLocation)) {
                     continue;
                 }
@@ -94,6 +101,15 @@ public class ExceptionHandler implements HandlerExceptionResolver {
             }
         }
         return new ModelAndView();
+    }
+
+    private String[] copyResourceLocations() {
+        String thymeleaf_location = env.getProperty("spring.thymeleaf.prefix");
+        //新增thymeleaf的前缀地址
+        String[] classpath_resource_locations_clone = new String[CLASSPATH_RESOURCE_LOCATIONS.length+1];
+        classpath_resource_locations_clone[0]=thymeleaf_location;
+        System.arraycopy(CLASSPATH_RESOURCE_LOCATIONS,0,classpath_resource_locations_clone,1,CLASSPATH_RESOURCE_LOCATIONS.length);
+        return classpath_resource_locations_clone;
     }
 
     private Result resolverException(Exception e) {

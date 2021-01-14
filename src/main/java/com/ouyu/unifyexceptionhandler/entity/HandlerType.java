@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
  * <pre>
  * @Auther: ousakai
  * @Date: 2021-01-13 16:15
- * @Description:
+ * @Description: 处理返回类型 分为json，view
  * 修改版本: 1.0
  * 修改日期:
  * 修改人 :
@@ -23,7 +23,7 @@ public class HandlerType {
 
     public HandlerType() {
         this.handlerType = "json";
-        this.viewPath = "classpath:/static/error.html";
+        this.viewPath = "classpath:/templates/error.html";
     }
 
 

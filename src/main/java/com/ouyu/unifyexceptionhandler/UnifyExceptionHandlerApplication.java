@@ -14,10 +14,10 @@ import java.io.InputStream;
 import java.net.URL;
 
 @SpringBootApplication
-@RestController
+//@RestController
 public class UnifyExceptionHandlerApplication {
 
-    @GetMapping("/test")
+    /*@GetMapping("/test")
     public void ss(){
         throw  new RuntimeException("sss");
     }
@@ -27,7 +27,7 @@ public class UnifyExceptionHandlerApplication {
         HandlerType handlerType = new HandlerType();
         handlerType.setHandlerType("view");
         return new ExceptionHandler(handlerType);
-    }
+    }*/
 
 
     public static void main(String[] args) {

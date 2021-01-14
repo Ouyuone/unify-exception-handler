@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>错误页面</title>
+    <style>
+        .exception_body{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .exception_tip{
+            font-size: 41px;
+            color: crimson;
+        }
+    </style>
+</head>
+<body>
+<div class="exception_body">
+    <div class="exception_tip">错误页面</div>
+    <div>
+        <p th:text="${result.message} +':'+ ${result.data} + '!'"/>
+    </div>
+</div>
+
+</body>
+</html>
