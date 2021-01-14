@@ -117,7 +117,10 @@ public class ExceptionHandler implements HandlerExceptionResolver {
         if (e instanceof ExceptionStrategy) {
             ExceptionStrategy exceptionStrategy = (ExceptionStrategy) e;
             IEnum iEnum = exceptionStrategy.getEnumStrategy();
+            //如果异常包含message信息则在result中添加message信息
+            if(exceptionStrategy.getMessage() == null || exceptionStrategy.getMessage().equals(""))
             addResult(result, iEnum, iEnum.getValue());
+            addResult(result, iEnum, exceptionStrategy.getMessage());
 
         } else if (e instanceof BindException) {
             BindException bindException = (BindException) e;

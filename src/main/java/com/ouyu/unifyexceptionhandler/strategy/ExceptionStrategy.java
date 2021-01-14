@@ -16,4 +16,12 @@ import com.ouyu.unifyexceptionhandler.enums.IEnum;
  */
 public abstract class ExceptionStrategy extends RuntimeException{
     public abstract IEnum getEnumStrategy();
+
+    public ExceptionStrategy() {
+        super();
+    }
+
+    public ExceptionStrategy(String message) {
+        super(message);
+    }
 }
