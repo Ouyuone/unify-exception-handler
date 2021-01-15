@@ -11,9 +11,9 @@ import com.ouyu.unifyexceptionhandler.strategy.ExceptionStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindException;
@@ -25,7 +25,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -41,6 +40,7 @@ import java.util.Objects;
  * 复审人 :
  * </pre>
  */
+@Order(-1000)
 @ConditionalOnProperty(prefix = "unify.exception-handler", name = "enable", havingValue = "true")
 @EnableConfigurationProperties(value = HandlerType.class)
 public class ExceptionHandler implements HandlerExceptionResolver {
@@ -49,7 +49,7 @@ public class ExceptionHandler implements HandlerExceptionResolver {
     private static final String JSON = "json";
     private static final String VIEW = "view";
     private static final Logger log = LoggerFactory.getLogger(ExceptionHandler.class);
-    private static final String[] CLASSPATH_RESOURCE_LOCATIONS = new String[]{"classpath:/META-INF/resources/", "classpath:/resources/", "classpath:/static/", "classpath:/public/"};
+    private static final String[] CLASSPATH_RESOURCE_LOCATIONS = new String[]{"classpath:/META-INF/resources/", "classpath:/resources/", "classpath:/static/", "classpath:/public/","classpath:/templates/"};
 
     public ExceptionHandler(HandlerType handlerType) {
         this.handlerType = handlerType;
@@ -105,6 +105,10 @@ public class ExceptionHandler implements HandlerExceptionResolver {
 
     private String[] copyResourceLocations() {
         String thymeleaf_location = env.getProperty("spring.thymeleaf.prefix");
+        //没有配置thymelefa前缀路径就直接返回默认路径地址
+        if(thymeleaf_location == null || thymeleaf_location.equals("")){
+            return CLASSPATH_RESOURCE_LOCATIONS;
+        }
         //新增thymeleaf的前缀地址
         String[] classpath_resource_locations_clone = new String[CLASSPATH_RESOURCE_LOCATIONS.length+1];
         classpath_resource_locations_clone[0]=thymeleaf_location;
@@ -159,7 +163,7 @@ public class ExceptionHandler implements HandlerExceptionResolver {
                 sb.append("并且");
             }
         }
-        addResult(result, ResponseEnum.BUSINESS_EXCEPTION, sb.toString());
+        addResult(result, ResponseEnum.ARGS_EXCEPTION, sb.toString());
     }
 
     /**

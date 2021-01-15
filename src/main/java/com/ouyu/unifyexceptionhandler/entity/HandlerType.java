@@ -23,7 +23,7 @@ public class HandlerType {
 
     public HandlerType() {
         this.handlerType = "json";
-        this.viewPath = "classpath:/templates/error.html";
+        this.viewPath = "classpath:/templates/errors.html";
     }
 
 

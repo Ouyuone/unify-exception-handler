@@ -14,8 +14,8 @@ package com.ouyu.unifyexceptionhandler.enums;
  */
 public enum ResponseEnum implements IEnum {
     SYSTEM_EXCEPTION(1,"系统异常"),
-    BUSINESS_EXCEPTION(2,"业务异常");
-
+    BUSINESS_EXCEPTION(2,"业务异常"),
+    ARGS_EXCEPTION(3,"参数绑定异常");
     private Integer code;
     private String value;
 

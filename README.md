@@ -1,5 +1,5 @@
-#统一处理异常框架工具
-##1、quick start
+# 统一处理异常框架工具
+## 1、quick start
 首先我们引入unify-exception-handler-1.0.jar包到lib文件中，
 再在配置文件application.properties中写入
 ```propertie
@@ -18,7 +18,7 @@ public class api{
 直接运行并访问http://localhost:8080/test
 在浏览器端得到返回
 ![](https://tva1.sinaimg.cn/large/008eGmZEly1gmnjp6vlnlj31fw0k6adb.jpg)
-##2、深入了解
+## 2、深入了解
 我们定义了一个Result类来封装信息
 ```java
 class Result<T>{
@@ -68,7 +68,7 @@ unify,exception-handler.view-path = classpath:/templates/error.html
 </body>
 </html>
 ```
-#3、自定义异常及返回信息
+# 3、自定义异常及返回信息
 > 自定义异常
 
 首先我们需要创建一个自己的异常类继承基类ExceptionStrategy
@@ -125,4 +125,66 @@ public class api{
 ```
 OK启动并访问 http://localhost:8080/test
 ![](https://tva1.sinaimg.cn/large/008eGmZEly1gmnl9b0jw0j318c08it9u.jpg)
+# 4、捕获@Valid注解验证实体类时抛出的错误信息
+> Spring validate效验框架
 
+首先我们还是定义一个实体类User
+```java
+public class User{
+    private int id;
+
+    @NotEmpty(message = "姓名不能为空")
+    private String name;
+
+    @Range(min = 7,max = 11,message = "手机长度不能少于7位或大于11位")
+    @Pattern(regexp = "[0,1][1-9](6,10)",message = "手机号格式错误")
+    private String phone;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+}
+```
+接着把api controller修改为下面的模样
+```java
+@RestController
+public class api{
+    @GetMapping("/user")
+    public Object tt(@Valid User user){
+        throw new RuntimeException("sss");
+    }
+}
+```
+启动并访问http://localhost:8080/user?naem=&phone=
+配置view视图模式后返回如下
+![](https://tva1.sinaimg.cn/large/008eGmZEly1gmo4q2x6sej31s60d4act.jpg)
+配置json数据模式后返回如下
+![](https://tva1.sinaimg.cn/large/008eGmZEly1gmo4u559ltj31i008qq4q.jpg)
+ok 我们的统一异常处理工具用法和扩展就这么 *简单*
+
+# 最后的话
+写的东西不是很完美，希望大家多多提ISSUE，共同交流一起进步！
+
+什么都要会一点，这样装起逼来不会尴尬。
+
+彪悍的人生不需要解释。
